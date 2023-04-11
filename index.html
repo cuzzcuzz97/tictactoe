@@ -1,0 +1,77 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <style>
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+        .tictactoe {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            background-color: black;
+            color: white;
+            width: 500px;
+            height: 500px;
+        }
+        .element {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid white;
+            font-size: 100px;
+            flex: 0 0 33%;
+        }
+
+        @media screen and (max-width: 1150){
+            .element {
+                font-size: 20px;
+            }
+        }
+    </style>
+    <div class="container">
+        <div class="tictactoe">
+        </div>
+    </div>
+<script>
+ const container = document.querySelector('.tictactoe');
+const boxNumber = 9;
+const winning = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+let box_x = [], box_y = [], count = 0, winner = false;
+
+for (let i = 0; i < boxNumber; i++) {
+  const div = document.createElement('div');
+  div.classList.add('element');
+  div.addEventListener('click', () => {
+    if (count === 8) return removeAll();
+    if (winner) return removeAll();
+    if (div.innerText) return;
+    if (count++ % 2) { div.textContent = 'x'; box_x.push(i); }
+    else { div.textContent = 'o'; box_y.push(i); }
+    [box_x, box_y].forEach((arr, index) => {
+      if (winning.some(combination => combination.every(num => arr.includes(num)))) {
+        alert(`${index === 0 ? 'X' : 'O'} win`);
+        winner = true;
+      }
+    });
+  });
+  container.appendChild(div);
+}
+
+function removeAll() {
+  container.querySelectorAll('.element').forEach(element => element.textContent = '');
+  box_x = []; box_y = []; count = 0;
+}
+</script>
+
+</body>
+</html>
